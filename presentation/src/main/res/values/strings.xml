@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="button_action_save">Save</string>
+  <string name="edit_action_add_value_hilt">Enter blood glucose value</string>
+  <string name="simple_text_average_format">Average: %s %s</string>
+  <string name="simple_text_gb_format">BG: %s %s</string>
+  <string name="simple_text_invalid_value">Please enter a valid value</string>
+</resources>
