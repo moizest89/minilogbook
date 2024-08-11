@@ -21,12 +21,8 @@ class LogbookViewModel @Inject constructor(
   private val getAverageUseCase: GetAverageBloodGlucoseUseCase
 ) : ViewModel() {
 
-//  val averageBloodGlucose = MutableLiveData<Double>()
-//  val entries = MutableLiveData<List<BloodGlucoseEntry>>()
-
   private val _averageBloodGlucose = MutableStateFlow(0.0)
   val averageBloodGlucose: StateFlow<Double> = _averageBloodGlucose.asStateFlow()
-
 
   private val _bloodGlucoseEntries = MutableStateFlow<List<BloodGlucoseModel>>(emptyList())
   val bloodGlucoseEntries: StateFlow<List<BloodGlucoseModel>> = _bloodGlucoseEntries.asStateFlow()
@@ -46,15 +42,6 @@ class LogbookViewModel @Inject constructor(
       updateAverage(unit)
     }
   }
-
-//  private fun updateEntries() {
-//    // Assuming repository can provide entries directly (in real scenarios, this might be through a UseCase)
-//    viewModelScope.launch {
-//      getBloodGlucoseEntriesUseCase().collect {
-//        entries.value = it
-//      }
-//    }
-//  }
 
   fun updateAverage(unit: BloodGlucoseUnit) {
     viewModelScope.launch {

@@ -61,12 +61,8 @@ class LogbookFragment : Fragment() {
     viewLifecycleOwner.lifecycleScope.launch {
       // repeatOnLifecycle ensures that this block is only running when the Lifecycle is at least STARTED
       viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.bloodGlucoseEntries.collect { entries ->
-          updateRecyclerView(entries)
-        }
-        viewModel.averageBloodGlucose.collect { average ->
-          setAverageLabel(average)
-        }
+        launch { collectBloodGlucoseEntries() }
+        launch { collectAverageBloodGlucose() }
       }
     }
 
@@ -75,6 +71,18 @@ class LogbookFragment : Fragment() {
     }
     saveButton.setOnClickListener {
       saveBloodGlucoseEntry()
+    }
+  }
+
+  private suspend fun collectBloodGlucoseEntries() {
+    viewModel.bloodGlucoseEntries.collect { entries ->
+      updateRecyclerView(entries)
+    }
+  }
+
+  private suspend fun collectAverageBloodGlucose() {
+    viewModel.averageBloodGlucose.collect { average ->
+      setAverageLabel(average)
     }
   }
 

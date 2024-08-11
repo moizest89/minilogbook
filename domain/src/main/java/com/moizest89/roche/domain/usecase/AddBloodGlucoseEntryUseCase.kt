@@ -8,7 +8,7 @@ import javax.inject.Inject
 class AddBloodGlucoseEntryUseCase @Inject constructor(
   private val repository: BloodGlucoseRepository
 ) : suspend (Double, BloodGlucoseUnit) -> Unit {
-  override suspend fun invoke(value: Double, unit: BloodGlucoseUnit) {
+  override suspend operator fun invoke(value: Double, unit: BloodGlucoseUnit) {
     val entry = BloodGlucoseModel(value, unit)
     repository.addEntry(entry)
   }
