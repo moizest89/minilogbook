@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.moizest89.roche.domain.model.BloodGlucoseEntry
+import com.moizest89.roche.domain.model.BloodGlucoseModel
 import com.moizest89.roche.presentation.R
 import com.moizest89.roche.presentation.logbook.BloodGlucoseAdapter.BloodGlucoseViewHolder
 import javax.inject.Inject
 
 class BloodGlucoseAdapter @Inject constructor(): RecyclerView.Adapter<BloodGlucoseViewHolder>() {
-  private val entries: MutableList<BloodGlucoseEntry> = mutableListOf()
+  private val entries: MutableList<BloodGlucoseModel> = mutableListOf()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BloodGlucoseViewHolder {
     val view =
@@ -32,7 +32,7 @@ class BloodGlucoseAdapter @Inject constructor(): RecyclerView.Adapter<BloodGluco
     return entries.size
   }
 
-  fun updateEntries(items: List<BloodGlucoseEntry>) {
+  fun updateEntries(items: List<BloodGlucoseModel>) {
     entries.clear()
     entries.addAll(items)
     notifyDataSetChanged()

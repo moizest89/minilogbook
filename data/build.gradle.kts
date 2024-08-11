@@ -1,7 +1,7 @@
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
-  id("kotlin-kapt")
+  id("com.google.devtools.ksp")
 }
 
 android {
@@ -29,16 +29,20 @@ android {
     jvmTarget = "1.8"
   }
 }
-kapt {
-  correctErrorTypes = true
-}
 
 dependencies {
 
   implementation(project(":domain"))
+  implementation(libs.coroutines.android)
+  implementation(libs.room.runtime)
+//  kapt(libs.room.compiler)
+  ksp("androidx.room:room-compiler:2.6.1")
+  implementation(libs.room.ktx)
+
   testImplementation(libs.junit)
+  testImplementation(libs.coroutines.test)
   androidTestImplementation("androidx.test.ext:junit:1.2.1")
 
   implementation(libs.dagger.hilt.android)
-  kapt(libs.dagger.hilt.compiler)
+  ksp(libs.dagger.hilt.compiler)
 }

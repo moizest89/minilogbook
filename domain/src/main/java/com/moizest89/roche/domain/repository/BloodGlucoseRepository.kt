@@ -1,8 +1,9 @@
 package com.moizest89.roche.domain.repository
 
-import com.moizest89.roche.domain.model.BloodGlucoseEntry
+import com.moizest89.roche.domain.model.BloodGlucoseModel
+import kotlinx.coroutines.flow.Flow
 
 interface BloodGlucoseRepository {
-  fun addEntry(entry: BloodGlucoseEntry)
-  fun getEntries(): List<BloodGlucoseEntry>
+  suspend fun addEntry(entry: BloodGlucoseModel)
+  fun getEntries(): Flow<List<BloodGlucoseModel>>
 }

@@ -1,16 +1,16 @@
 package com.moizest89.roche.data.datasource
 
-import com.moizest89.roche.domain.model.BloodGlucoseEntry
+import com.moizest89.roche.domain.model.BloodGlucoseModel
 import javax.inject.Inject
 
 class InMemoryDataSource @Inject constructor(){
-  private val entries = mutableListOf<BloodGlucoseEntry>()
+  private val entries = mutableListOf<BloodGlucoseModel>()
 
-  fun addEntry(entry: BloodGlucoseEntry) {
+  fun addEntry(entry: BloodGlucoseModel) {
     entries.add(entry)
   }
 
-  fun getEntries(): List<BloodGlucoseEntry> {
+  fun getEntries(): List<BloodGlucoseModel> {
     return entries.toList()
   }
 }

@@ -2,18 +2,20 @@ package com.moizest89.roche.domain.usecase
 
 import com.moizest89.roche.domain.model.BloodGlucoseUnit
 import com.moizest89.roche.domain.repository.BloodGlucoseRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetAverageBloodGlucoseUseCase @Inject constructor(
   private val repository: BloodGlucoseRepository,
-) {
-  fun execute(unit: BloodGlucoseUnit): Double {
-    val entries = repository.getEntries()
-    // Convert values to the same unit and calculate the average
-    val convertedValues = entries.map {
-      if (it.unit == unit) it.value else convertValue(it.value, it.unit, unit)
+) : (BloodGlucoseUnit) -> Flow<Double> {
+  override fun invoke(unit: BloodGlucoseUnit): Flow<Double> {
+    return repository.getEntries().map { entries ->
+      val convertedValues = entries.map {
+        if (it.unit == unit) it.value else convertValue(it.value, it.unit, unit)
+      }
+      if (convertedValues.isNotEmpty()) convertedValues.average() else 0.0
     }
-    return if (convertedValues.isNotEmpty()) convertedValues.average() else 0.0
   }
 
   private fun convertValue(

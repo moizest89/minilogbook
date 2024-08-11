@@ -1,7 +1,7 @@
 plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
-  id("kotlin-kapt")
+  id("com.google.devtools.ksp")
   id("dagger.hilt.android.plugin")
 }
 
@@ -36,9 +36,6 @@ android {
     viewBinding = true
   }
 }
-kapt {
-  correctErrorTypes = true
-}
 
 dependencies {
 
@@ -47,12 +44,13 @@ dependencies {
   implementation(libs.material.material)
   implementation(libs.constraintlayout.constraintlayout)
   implementation(libs.lifecycle.viewmodel.ktx)
+  implementation(libs.coroutines.android)
 
   implementation(libs.android.navigation.fragment)
   implementation(libs.android.navigation.ui)
 
   implementation(libs.dagger.hilt.android)
-  kapt(libs.dagger.hilt.compiler)
+  ksp(libs.dagger.hilt.compiler)
 
   implementation(project(":presentation"))
 

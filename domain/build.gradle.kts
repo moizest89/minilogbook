@@ -1,7 +1,7 @@
 plugins {
   id("com.android.library")
   id("org.jetbrains.kotlin.android")
-  id("kotlin-kapt")
+  id("com.google.devtools.ksp")
 }
 
 android {
@@ -30,13 +30,10 @@ android {
   }
 }
 
-kapt {
-  correctErrorTypes = true
-}
-
 dependencies {
+  implementation(libs.coroutines.android)
   implementation(libs.dagger.hilt.android)
-  kapt(libs.dagger.hilt.compiler)
+  ksp(libs.dagger.hilt.compiler)
 
   testImplementation(libs.junit)
   androidTestImplementation("androidx.test.ext:junit:1.2.1")

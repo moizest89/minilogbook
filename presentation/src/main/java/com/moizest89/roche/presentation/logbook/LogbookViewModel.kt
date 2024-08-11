@@ -1,37 +1,66 @@
 package com.moizest89.roche.presentation.logbook
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.moizest89.roche.domain.model.BloodGlucoseEntry
+import androidx.lifecycle.viewModelScope
+import com.moizest89.roche.domain.model.BloodGlucoseModel
 import com.moizest89.roche.domain.model.BloodGlucoseUnit
 import com.moizest89.roche.domain.usecase.AddBloodGlucoseEntryUseCase
 import com.moizest89.roche.domain.usecase.GetAverageBloodGlucoseUseCase
 import com.moizest89.roche.domain.usecase.GetBloodGlucoseEntriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LogbookViewModel @Inject constructor(
   private val addEntryUseCase: AddBloodGlucoseEntryUseCase,
-  private val getBloodGlucoseEntriesUseCase : GetBloodGlucoseEntriesUseCase,
+  private val getBloodGlucoseEntriesUseCase: GetBloodGlucoseEntriesUseCase,
   private val getAverageUseCase: GetAverageBloodGlucoseUseCase
 ) : ViewModel() {
 
-  val averageBloodGlucose = MutableLiveData<Double>()
-  val entries = MutableLiveData<List<BloodGlucoseEntry>>()
+//  val averageBloodGlucose = MutableLiveData<Double>()
+//  val entries = MutableLiveData<List<BloodGlucoseEntry>>()
+
+  private val _averageBloodGlucose = MutableStateFlow(0.0)
+  val averageBloodGlucose: StateFlow<Double> = _averageBloodGlucose.asStateFlow()
+
+
+  private val _bloodGlucoseEntries = MutableStateFlow<List<BloodGlucoseModel>>(emptyList())
+  val bloodGlucoseEntries: StateFlow<List<BloodGlucoseModel>> = _bloodGlucoseEntries.asStateFlow()
+
+  init {
+    viewModelScope.launch {
+      getBloodGlucoseEntriesUseCase()
+        .collect { entries ->
+          _bloodGlucoseEntries.value = entries
+        }
+    }
+  }
 
   fun addBloodGlucoseEntry(value: Double, unit: BloodGlucoseUnit) {
-    addEntryUseCase.execute(value, unit)
-    updateEntries()
-    updateAverage(unit)
+    viewModelScope.launch {
+      addEntryUseCase.invoke(value, unit)
+      updateAverage(unit)
+    }
   }
 
-  private fun updateEntries() {
-    // Assuming repository can provide entries directly (in real scenarios, this might be through a UseCase)
-    entries.value = getBloodGlucoseEntriesUseCase()
-  }
+//  private fun updateEntries() {
+//    // Assuming repository can provide entries directly (in real scenarios, this might be through a UseCase)
+//    viewModelScope.launch {
+//      getBloodGlucoseEntriesUseCase().collect {
+//        entries.value = it
+//      }
+//    }
+//  }
 
   fun updateAverage(unit: BloodGlucoseUnit) {
-    averageBloodGlucose.value = getAverageUseCase.execute(unit)
+    viewModelScope.launch {
+      getAverageUseCase.invoke(unit).collect {
+        _averageBloodGlucose.value = it
+      }
+    }
   }
 }

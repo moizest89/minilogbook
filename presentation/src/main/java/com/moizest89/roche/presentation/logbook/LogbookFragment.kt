@@ -12,15 +12,19 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.moizest89.roche.domain.model.BloodGlucoseEntry
+import com.moizest89.roche.domain.model.BloodGlucoseModel
 import com.moizest89.roche.domain.model.BloodGlucoseUnit
 import com.moizest89.roche.presentation.R
 import com.moizest89.roche.presentation.common.onItemClicked
 import com.moizest89.roche.presentation.common.showMessage
 import com.moizest89.roche.presentation.databinding.FragmentLogbookBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -36,8 +40,9 @@ class LogbookFragment : Fragment() {
 
   private val viewModel: LogbookViewModel by viewModels()
   private lateinit var recyclerView: RecyclerView
+
   @Inject
-  lateinit var adapter : BloodGlucoseAdapter
+  lateinit var adapter: BloodGlucoseAdapter
 
   private val selectedUnit get() = unitSpinner.selectedItem as BloodGlucoseUnit
 
@@ -53,8 +58,17 @@ class LogbookFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
     bindViews()
 
-    viewModel.averageBloodGlucose.observe(viewLifecycleOwner, ::setAverageLabel)
-    viewModel.entries.observe(viewLifecycleOwner, ::updateRecyclerView)
+    viewLifecycleOwner.lifecycleScope.launch {
+      // repeatOnLifecycle ensures that this block is only running when the Lifecycle is at least STARTED
+      viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.bloodGlucoseEntries.collect { entries ->
+          updateRecyclerView(entries)
+        }
+        viewModel.averageBloodGlucose.collect { average ->
+          setAverageLabel(average)
+        }
+      }
+    }
 
     unitSpinner.onItemClicked {
       viewModel.updateAverage(selectedUnit)
@@ -101,7 +115,7 @@ class LogbookFragment : Fragment() {
     }
   }
 
-  private fun updateRecyclerView(entries: List<BloodGlucoseEntry>) {
+  private fun updateRecyclerView(entries: List<BloodGlucoseModel>) {
     adapter.updateEntries(entries)
   }
 

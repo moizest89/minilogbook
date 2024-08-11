@@ -17,12 +17,13 @@ mockito-kotlin = "5.1.0"
 dagger-hilt-android = "2.48"
 dagger-hilt-compiler = "2.48"
 agp = "8.2.2"
-kotlin = "1.9.22"
+kotlin = "2.0.10"
 androidx-test-ext-junit = "1.2.1"
 espresso-core = "3.6.1"
 legacy-support-v4 = "1.0.0"
 lifecycle-livedata-ktx = "2.8.3"
-
+room = "2.6.1"
+#ksp = "2.0.0-1.0.22"
 
 [libraries]
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -33,7 +34,10 @@ dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref =
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-hilt-compiler" }
 android-navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "android-navigation-fragment-ktx" }
 android-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "android-navigation-ui-ktx" }
-
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+#ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines-android" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
