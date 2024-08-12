@@ -67,17 +67,67 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
   </androidx.cardview.widget.CardView>
 
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/margin_small"
+      android:layout_marginEnd="@dimen/margin_small"
+      android:layout_marginTop="@dimen/margin_medium"
+      android:paddingBottom="@dimen/margin_small"
+      android:id="@+id/frameLayoutHeaderTable"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/cardViewHeader"
+      >
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:gravity="start"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold"
+        android:text="@string/simple_label_blood_glucose"
+        tools:text="Blood glucose"
+        />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:gravity="end"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold"
+        android:text="@string/simple_label_date"
+        tools:text="Date"
+        />
+  </FrameLayout>
+
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/recyclerView"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:layout_marginTop="16dp"
       tools:itemCount="10"
       tools:listitem="@layout/item_blood_glucose_entry"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/cardViewHeader"
+      app:layout_constraintTop_toBottomOf="@id/frameLayoutHeaderTable"
+      />
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/textViewNoData"
+      android:textStyle="bold"
+      android:textSize="@dimen/text_size_large"
+      android:text="@string/simple_text_no_data"
+      app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cardViewHeader"
       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

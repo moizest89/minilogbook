@@ -1,6 +1,7 @@
 package com.moizest89.roche.presentation.DI
 
 import com.moizest89.roche.domain.usecase.AddBloodGlucoseEntryUseCase
+import com.moizest89.roche.domain.usecase.DeleteBloodGlucoseEntriesUseCase
 import com.moizest89.roche.domain.usecase.GetAverageBloodGlucoseUseCase
 import com.moizest89.roche.domain.usecase.GetBloodGlucoseEntriesUseCase
 import com.moizest89.roche.presentation.logbook.LogbookViewModel
@@ -17,12 +18,14 @@ object ViewModelModule {
   fun provideBloodGlucoseViewModel(
     addBloodGlucoseEntryUseCase: AddBloodGlucoseEntryUseCase,
     getBloodGlucoseEntriesUseCase : GetBloodGlucoseEntriesUseCase,
-    getAverageBloodGlucoseUseCase: GetAverageBloodGlucoseUseCase
+    getAverageBloodGlucoseUseCase: GetAverageBloodGlucoseUseCase,
+    deleteBloodGlucoseEntriesUseCase: DeleteBloodGlucoseEntriesUseCase
   ): LogbookViewModel {
     return LogbookViewModel(
       addBloodGlucoseEntryUseCase,
       getBloodGlucoseEntriesUseCase,
       getAverageBloodGlucoseUseCase,
+      deleteBloodGlucoseEntriesUseCase,
     )
   }
 }

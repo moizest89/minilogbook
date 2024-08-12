@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface BloodGlucoseRepository {
   suspend fun addEntry(entry: BloodGlucoseModel)
   fun getEntries(): Flow<List<BloodGlucoseModel>>
+  fun deleteAllEntries()
 }

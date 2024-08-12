@@ -16,4 +16,8 @@ class RoomDataSource @Inject constructor(
   fun getEntries(): Flow<List<BloodGlucoseEntity>> {
     return bloodGlucoseDao.getEntries()
   }
+
+  fun deleteAllEntries() {
+    bloodGlucoseDao.deleteAllEntries()
+  }
 }

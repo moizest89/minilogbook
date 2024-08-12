@@ -2,11 +2,17 @@ package com.moizest89.roche.presentation.logbook
 
 import android.R.layout
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -35,6 +41,11 @@ class LogbookFragment : Fragment() {
   lateinit var adapter: BloodGlucoseAdapter
   private val selectedUnit get() = binding.unitSpinner.selectedItem as BloodGlucoseUnit
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
@@ -54,6 +65,27 @@ class LogbookFragment : Fragment() {
         launch { collectAverageBloodGlucose() }
       }
     }
+    requireActivity().addMenuProvider(object : MenuProvider {
+      override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_main, menu)
+      }
+
+      override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+          R.id.action_clear_data -> {
+            deleteAllEntries()
+            true
+          }
+
+          R.id.action_about_me -> {
+            aboutMeMessage()
+            true
+          }
+
+          else -> false
+        }
+      }
+    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
   }
 
   private suspend fun collectBloodGlucoseEntries() {
@@ -68,9 +100,34 @@ class LogbookFragment : Fragment() {
     }
   }
 
+  private fun deleteAllEntries() {
+    AlertDialog.Builder(requireActivity())
+      .setTitle(R.string.alert_clear_data_title)
+      .setMessage(R.string.alert_clear_data_message)
+      .setCancelable(false)
+      .setPositiveButton(android.R.string.ok) { dialog, id ->
+        viewLifecycleOwner.lifecycleScope.launch {
+          viewModel.deleteAllEntries()
+        }
+      }
+      .setNegativeButton(android.R.string.cancel) { dialog, id ->
+        dialog.dismiss()
+      }.create().show()
+  }
+
+  private fun aboutMeMessage() {
+    val result = HtmlCompat.fromHtml(getString(R.string.alert_message_about_me), HtmlCompat.FROM_HTML_MODE_LEGACY)
+    AlertDialog.Builder(requireActivity())
+      .setTitle(R.string.alert_title_about_me)
+      .setMessage(result)
+      .setCancelable(false)
+      .setPositiveButton(android.R.string.ok) { dialog, _ ->
+        dialog.dismiss()
+      }.create().show()
+  }
+
   private fun bindViews() {
     with(binding) {
-      recyclerView
       recyclerView.layoutManager = LinearLayoutManager(requireActivity())
       recyclerView.adapter = adapter
       ArrayAdapter(
@@ -112,6 +169,8 @@ class LogbookFragment : Fragment() {
   }
 
   private fun updateRecyclerView(entries: List<BloodGlucoseModel>) {
+    binding.textViewNoData.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
+    binding.frameLayoutHeaderTable.visibility = if (entries.isEmpty()) View.GONE else View.VISIBLE
     adapter.updateEntries(entries)
   }
 

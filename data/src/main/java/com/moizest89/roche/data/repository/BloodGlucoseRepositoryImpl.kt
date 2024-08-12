@@ -22,4 +22,8 @@ class BloodGlucoseRepositoryImpl @Inject constructor(
       }
     }
   }
+
+  override fun deleteAllEntries() {
+    dataSource.deleteAllEntries()
+  }
 }

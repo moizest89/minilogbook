@@ -3,6 +3,21 @@
   <string name="button_action_save">Save</string>
   <string name="edit_action_add_value_hilt">Enter blood glucose value</string>
   <string name="simple_text_average_format">Average: %s %s</string>
-  <string name="simple_text_gb_format">BG: %s %s</string>
+  <string name="simple_text_gb_format">%s %s</string>
   <string name="simple_text_invalid_value">Please enter a valid value</string>
+  <string name="action_about_me">About Me</string>
+  <string name="menu_clear_data">Clear all data</string>
+  <string name="alert_clear_data_message">Are you sure you want to delete all items?</string>
+  <string name="alert_clear_data_title">Delete Confirmation</string>
+  <string name="simple_text_no_data">No data to show</string>
+  <string name="simple_label_blood_glucose">Blood glucose</string>
+  <string name="simple_label_date">Date</string>
+  <string name="alert_title_about_me">About Me</string>
+  <string name="alert_message_about_me"><![CDATA[Hello!<br/><br/>
+Im a passionate Android developer with a focus on creating user-friendly and efficient mobile applications. This project, which revolves around a simple blood glucose logbook, showcases my skills in building responsive and intuitive UIs, implementing Clean Architecture, and leveraging modern tools like Kotlin, Room, Flow, and Hilt for dependency injection.
+<br/><br/>
+With this project, Ive aimed to create a seamless experience for users who need to track and monitor their blood glucose levels, all while ensuring the app remains stable, responsive, and easy to maintain. Im always excited to explore new technologies and continuously improve my development practices.
+<br/><br/>
+<a href="https://www.linkedin.com/in/moizest89/">@moizest89</a>]]>
+  </string>
 </resources>
