@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="colorPrimary">#96BC3B</color>
-  <color name="colorPrimaryDark">#7A9A30</color> <!-- Slightly darker shade -->
+  <color name="colorPrimaryDark">#5A7726</color> <!-- Darker shade for night mode -->
   <color name="colorAccent">#96BC3B</color>
-  <color name="colorBackground">#FFFFFF</color> <!-- Default background color -->
+  <color name="colorBackground">#121212</color> <!-- Dark background color for night mode -->
   <color name="colorAccentOpacity">#3E96BC3B</color> <!-- Default text color -->
 </resources>

@@ -20,3 +20,7 @@ fun Spinner.onItemClicked(onItemSelected: (position: Int) -> Unit) {
 
 fun Fragment.showMessage(@StringRes message: Int) =
   Toast.makeText(requireActivity(), getText(message), Toast.LENGTH_SHORT).show()
+
+fun String.toValidDouble(): Double {
+  return if (this.isNotEmpty()) this.toDouble() else 0.0
+}

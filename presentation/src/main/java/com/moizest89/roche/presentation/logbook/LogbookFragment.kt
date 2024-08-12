@@ -7,21 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.moizest89.roche.domain.model.BloodGlucoseModel
 import com.moizest89.roche.domain.model.BloodGlucoseUnit
 import com.moizest89.roche.presentation.R
 import com.moizest89.roche.presentation.common.onItemClicked
 import com.moizest89.roche.presentation.common.showMessage
+import com.moizest89.roche.presentation.common.toValidDouble
 import com.moizest89.roche.presentation.databinding.FragmentLogbookBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,19 +28,11 @@ class LogbookFragment : Fragment() {
 
   private var _binding: FragmentLogbookBinding? = null
   private val binding get() = _binding!!
-
-  private lateinit var unitSpinner: Spinner
-  private lateinit var bloodGlucoseInput: EditText
-  private lateinit var saveButton: Button
-  private lateinit var averageLabel: TextView
-
   private val viewModel: LogbookViewModel by viewModels()
-  private lateinit var recyclerView: RecyclerView
 
   @Inject
   lateinit var adapter: BloodGlucoseAdapter
-
-  private val selectedUnit get() = unitSpinner.selectedItem as BloodGlucoseUnit
+  private val selectedUnit get() = binding.unitSpinner.selectedItem as BloodGlucoseUnit
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -65,13 +53,6 @@ class LogbookFragment : Fragment() {
         launch { collectAverageBloodGlucose() }
       }
     }
-
-    unitSpinner.onItemClicked {
-      viewModel.updateAverage(selectedUnit)
-    }
-    saveButton.setOnClickListener {
-      saveBloodGlucoseEntry()
-    }
   }
 
   private suspend fun collectBloodGlucoseEntries() {
@@ -87,25 +68,29 @@ class LogbookFragment : Fragment() {
   }
 
   private fun bindViews() {
-    unitSpinner = binding.unitSpinner
-    bloodGlucoseInput = binding.bloodGlucoseInput
-    saveButton = binding.saveButton
-    averageLabel = binding.averageLabel
-    recyclerView = binding.recyclerView
-    recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-    recyclerView.adapter = adapter
-    ArrayAdapter(
-      requireActivity(),
-      layout.simple_spinner_item,
-      BloodGlucoseUnit.entries.toTypedArray()
-    ).also { adapter ->
-      adapter.setDropDownViewResource(layout.simple_spinner_dropdown_item)
-      unitSpinner.adapter = adapter
+    with(binding) {
+      recyclerView
+      recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+      recyclerView.adapter = adapter
+      ArrayAdapter(
+        requireActivity(),
+        layout.simple_spinner_item,
+        BloodGlucoseUnit.entries.toTypedArray()
+      ).also { adapter ->
+        adapter.setDropDownViewResource(layout.simple_spinner_dropdown_item)
+        unitSpinner.adapter = adapter
+      }
+      binding.unitSpinner.onItemClicked {
+        viewModel.updateAverage(selectedUnit)
+      }
+      binding.saveButton.setOnClickListener {
+        saveBloodGlucoseEntry()
+      }
     }
   }
 
   private fun setAverageLabel(averageValue: Double) {
-    averageLabel.text = String.format(
+    binding.averageLabel.text = String.format(
       getString(R.string.simple_text_average_format),
       averageValue.toString(),
       selectedUnit.prefix
@@ -113,13 +98,15 @@ class LogbookFragment : Fragment() {
   }
 
   private fun saveBloodGlucoseEntry() {
-    val inputTextValue = bloodGlucoseInput.text.toString().toDouble()
-    if (inputTextValue > 0.0) {
-      viewModel.addBloodGlucoseEntry(inputTextValue, selectedUnit)
-      viewModel.updateAverage(selectedUnit)
-      bloodGlucoseInput.text.clear()
-    } else {
-      showMessage(R.string.simple_text_invalid_value)
+    with(binding) {
+      val inputTextValue = bloodGlucoseInput.text.toString().toValidDouble()
+      if (inputTextValue > 0.0) {
+        viewModel.addBloodGlucoseEntry(inputTextValue, selectedUnit)
+        viewModel.updateAverage(selectedUnit)
+        bloodGlucoseInput.text.clear()
+      } else {
+        showMessage(R.string.simple_text_invalid_value)
+      }
     }
   }
 
