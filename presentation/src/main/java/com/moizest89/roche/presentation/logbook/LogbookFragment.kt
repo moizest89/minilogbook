@@ -16,6 +16,7 @@ import com.moizest89.roche.domain.model.BloodGlucoseModel
 import com.moizest89.roche.domain.model.BloodGlucoseUnit
 import com.moizest89.roche.presentation.R
 import com.moizest89.roche.presentation.common.onItemClicked
+import com.moizest89.roche.presentation.common.roundToDecimalPlaces
 import com.moizest89.roche.presentation.common.showMessage
 import com.moizest89.roche.presentation.common.toValidDouble
 import com.moizest89.roche.presentation.databinding.FragmentLogbookBinding
@@ -92,7 +93,7 @@ class LogbookFragment : Fragment() {
   private fun setAverageLabel(averageValue: Double) {
     binding.averageLabel.text = String.format(
       getString(R.string.simple_text_average_format),
-      averageValue.toString(),
+      averageValue.roundToDecimalPlaces().toString(),
       selectedUnit.prefix
     )
   }

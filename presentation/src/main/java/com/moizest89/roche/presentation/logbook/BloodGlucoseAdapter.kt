@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.moizest89.roche.domain.model.BloodGlucoseModel
 import com.moizest89.roche.presentation.R
+import com.moizest89.roche.presentation.common.formatDate
+import com.moizest89.roche.presentation.common.roundToDecimalPlaces
 import com.moizest89.roche.presentation.logbook.BloodGlucoseAdapter.BloodGlucoseViewHolder
 import javax.inject.Inject
 
@@ -21,11 +23,15 @@ class BloodGlucoseAdapter @Inject constructor(): RecyclerView.Adapter<BloodGluco
 
   override fun onBindViewHolder(holder: BloodGlucoseViewHolder, position: Int) {
     val entry = entries[position]
-    holder.textView.text = String.format(
-      holder.getContext().getString(R.string.simple_text_gb_format),
-      entry.value,
-      entry.unit.prefix
-    )
+
+    with(holder){
+      textView.text = String.format(
+        holder.getContext().getString(R.string.simple_text_gb_format),
+        entry.value.roundToDecimalPlaces(),
+        entry.unit.prefix
+      )
+      textViewDate.text = entry.timestamp.formatDate()
+    }
   }
 
   override fun getItemCount(): Int {
@@ -40,7 +46,7 @@ class BloodGlucoseAdapter @Inject constructor(): RecyclerView.Adapter<BloodGluco
 
   class BloodGlucoseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val textView: TextView = itemView.findViewById(R.id.textView)
-
+    val textViewDate: TextView = itemView.findViewById(R.id.textViewDate)
     fun getContext() = itemView.context
   }
 }

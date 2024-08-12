@@ -6,7 +6,8 @@ import com.moizest89.roche.domain.model.BloodGlucoseUnit
 fun BloodGlucoseEntity.toBloodGlucoseModel(): BloodGlucoseModel {
   return BloodGlucoseModel(
     value = this.value.toDouble(),
-    unit = BloodGlucoseUnit.valueOf(this.unit)
+    unit = BloodGlucoseUnit.valueOf(this.unit),
+    timestamp = this.timestamp
   )
 }
 

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_small"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="@dimen/card_radius"
     app:cardElevation="@dimen/card_elevation"
     app:contentPadding="@dimen/padding_small"
@@ -13,7 +15,22 @@
       android:id="@+id/textView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textSize="@dimen/text_size_medium"
+      android:layout_gravity="start|center_vertical"
+      android:gravity="start"
+      android:paddingBottom="@dimen/padding_small_l"
+      android:paddingTop="@dimen/padding_small_l"
+      android:textSize="@dimen/text_size_small"
+      android:textStyle="bold"
       tools:text="BG: 100 MG_DL"
+      />
+
+  <TextView
+      android:id="@+id/textViewDate"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start|center_vertical"
+      android:gravity="end"
+      android:textSize="@dimen/text_size_small_small"
+      tools:text="12/08/2024 15:03:52"
       />
 </androidx.cardview.widget.CardView>
