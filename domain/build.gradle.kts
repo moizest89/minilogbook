@@ -36,5 +36,9 @@ dependencies {
   ksp(libs.dagger.hilt.compiler)
 
   testImplementation(libs.junit)
+  testImplementation(libs.coroutines.test)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockito.kotlin)
+  testImplementation(libs.mockk.mockk)
   androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }

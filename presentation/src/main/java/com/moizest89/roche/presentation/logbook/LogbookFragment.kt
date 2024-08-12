@@ -56,7 +56,6 @@ class LogbookFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    bindViews()
 
     viewLifecycleOwner.lifecycleScope.launch {
       // repeatOnLifecycle ensures that this block is only running when the Lifecycle is at least STARTED
@@ -86,6 +85,7 @@ class LogbookFragment : Fragment() {
         }
       }
     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    bindViews()
   }
 
   private suspend fun collectBloodGlucoseEntries() {
