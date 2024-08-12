@@ -112,4 +112,6 @@ test_results_shardIndex*
 # Jacoco
 app/jacoco.exec
 
+
+
 # End of https://www.gitignore.io/api/androidstudio
